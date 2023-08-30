@@ -19,8 +19,7 @@ jobs:
       - name: Create project repo 
         run: echo Creating ${{ inputs.projectName }} repo.
 
-  wiki:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Init wiki pages
-        run: echo Adding ${{ inputs.projectName }} to the index page.
+  init-wiki:
+    uses: bromba-noesis/workflows/.github/workflows/wiki.yml@main
+    with:
+      projectName: ${{ inputs.projectName }}
