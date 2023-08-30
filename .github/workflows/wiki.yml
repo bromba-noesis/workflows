@@ -1,31 +1,26 @@
-name: Wiki
+name: Init project wiki
 
 on: 
+    workflow_call:
+      inputs:
+        projectName:
+          required: true
+          type: string
     workflow_dispatch:
+      inputs:
+        projectName:
+          required: true
+          type: string
 
 jobs:
-  deploy:
+  init-wiki:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Date
-        run: echo "mydate=$(date +'%Y%m%d')" >> $GITHUB_ENV
-      - name: Hour
-        run: echo "myhour=$(date +'%H:%M:%S')" >> $GITHUB_ENV
-      - name: Commit ID
-        run: echo "mycid=${GITHUB_SHA}" >> $GITHUB_ENV
-      - name: Branch name
-        run: echo "mybranch=${GITHUB_REF##*/}" >> $GITHUB_ENV
-      - name: Tag name
-        run: echo "mytag=$GITHUB_REF_NAME" >> $GITHUB_ENV
-      - name: prep file
-        run: |
-          echo $mytag
-          echo "| $mydate | $myhour | $mycid | $mybranch | $mytag |"
-      - name: Upload Documentation to Wiki
-        uses: SwiftDocOrg/github-wiki-publish-action@v1
-        with:
-          path: "wiki"
-        env:
-          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.bromba_noesis_pat_wiki }}
+      - name: Init project wiki 
+        run: echo Creating ${{ inputs.projectName }} wiki pages.
+
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update project index page
+        run: echo Adding ${{ inputs.projectName }} to the index page.
