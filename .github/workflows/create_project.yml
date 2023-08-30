@@ -1,0 +1,26 @@
+name: Init project 
+
+on: 
+    workflow_call:
+      inputs:
+        projectName:
+          required: true
+          type: string
+    workflow_dispatch:
+      inputs:
+        projectName:
+          required: true
+          type: string
+
+jobs:
+  create-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create project repo 
+        run: echo Creating ${{ inputs.projectName }} repo.
+
+  wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Init wiki pages
+        run: echo Adding ${{ inputs.projectName }} to the index page.
