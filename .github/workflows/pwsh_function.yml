@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test_function:
+    runs-on: windows-latest
+
+    steps:
+      - name: test_function
+        run: |
+          function fun($stringy) {
+            Write-Output "$stringy"
+          }
+
+          fun "ola"
