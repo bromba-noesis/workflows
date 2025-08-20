@@ -1,13 +1,15 @@
 name: Test
 
 on:
-  push:
-    branches: [ "development" ]
   workflow_dispatch:
 
 jobs:
   replace-placeholders:
     runs-on: ubuntu-latest
+    environment: >
+      ${{ github.ref == 'refs/heads/main' && 'prd' ||
+          github.ref == 'refs/heads/develop' && 'tst' ||
+          'dev' }}
     env:
       PLACEHOLDERS_JSON: ${{ vars.PLACEHOLDERS_JSON }}  # Repository variable with JSON map
 
@@ -18,7 +20,7 @@ jobs:
       - name: Show original file
         run: cat config.json
 
-      - name: Replace placeholders dynamically
+      - name: Replace placeholders
         run: |
           echo "Parsing placeholder map..."
 
