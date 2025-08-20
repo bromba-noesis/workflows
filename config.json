@@ -1,5 +1,5 @@
 {
   "api_key": "{{API_KEY}}",
-  "project_id": "{{PROJECT_ID}}",
-  "env": "dev"
+  "project_id": "my_proj",
+  "env": "{{ENVIRONMENT}}"
 }
