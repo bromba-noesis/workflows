@@ -1,4 +1,4 @@
-name: Test
+name: replace_vars_bash
 
 on:
   workflow_dispatch:
