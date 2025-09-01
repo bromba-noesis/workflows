@@ -1,0 +1,50 @@
+name: replace_vars_pwsh
+
+on:
+  workflow_dispatch:
+
+jobs:
+  replace-placeholders:
+    runs-on: windows-latest
+    environment: >
+      ${{ github.ref == 'refs/heads/main' && 'prd' ||
+          github.ref == 'refs/heads/develop' && 'tst' ||
+          'dev' }}
+    env:
+      PLACEHOLDERS_JSON: ${{ vars.PLACEHOLDERS_JSON }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Replace placeholders in config.json
+        run: |
+          Write-Output "Before replacement:"
+          Get-Content config.json | ForEach-Object { Write-Output $_ }
+
+          # Parse the JSON from the repository variable into a PowerShell object
+          $vars = $env:PLACEHOLDERS_JSON | ConvertFrom-Json
+
+          # Read the config file
+          $content = Get-Content config.json -Raw
+
+          # Find all placeholders in the form {{VAR}}
+          $matches = [regex]::Matches($content, '{{([^}]+)}}')
+
+          foreach ($m in $matches) {
+            $varName = $m.Groups[1].Value
+            $value = $vars.$varName
+
+            if ($null -ne $value) {
+              $content = $content -replace "\{\{$varName\}\}", [Regex]::Escape($value) -replace '\\',''
+            } else {
+              Write-Warning "No value found for placeholder {{$varName}}"
+            }
+          }
+
+          # Write back to file
+          $content | Set-Content config.json -Encoding UTF8
+
+          Write-Output "After replacement:"
+          Get-Content config.json | ForEach-Object { Write-Output $_ }
+        shell: powershell
