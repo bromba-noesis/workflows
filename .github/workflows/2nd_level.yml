@@ -1,0 +1,14 @@
+name: 2nd_level
+
+on:
+  workflow_call:
+    inputs:
+      stringy:
+        required: true
+        type: string
+
+jobs:
+  _2nd_level:
+    uses: bromba-noesis/workflows/modules/3rd_level.yml@main
+    with:
+      stringy: "ola"
