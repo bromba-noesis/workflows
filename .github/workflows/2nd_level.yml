@@ -9,6 +9,6 @@ on:
 
 jobs:
   _2nd_level:
-    uses: bromba-noesis/workflows/modules/3rd_level.yml@main
+    uses: bromba-noesis/workflows/.github/workflows/modules/3rd_level.yml@main
     with:
-      stringy: "ola"
+      stringy: ${{ inputs.stringy }}
