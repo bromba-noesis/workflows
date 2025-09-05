@@ -1,0 +1,17 @@
+name: 3rd_level
+
+on:
+  workflow_call:
+    inputs:
+      stringy:
+        required: true
+        type: string
+
+jobs:
+  _3rd_level:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: echoing
+        run: |
+          echo ${{ inputs.stringy }}
